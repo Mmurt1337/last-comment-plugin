@@ -1,0 +1,11 @@
+<form class="aui" id="commentHistoryOptionsForm" name="commentHistoryOptionsForm" method="post"
+	action="${baseurl}/secure/action/LastCommentWebworkAction!update.jspa?">
+      <p><b>Custom filed ID:</b><br>
+       <input name="cfID" type="text" size="40">
+      </p>
+    <div class="buttons-container">
+        <div class="buttons">
+			<input class="button" type="submit" value="Save">
+		</div>
+	</div>
+</form>
