@@ -36,6 +36,7 @@ public class LastCommentWebworkAction extends JiraWebActionSupport {
 
     public String doUpdate() {
         this.getRedirect("/secure/action/LastCommentWebworkAction.jspa");
+        log.warn("я работаю");
         return null;
     }
 

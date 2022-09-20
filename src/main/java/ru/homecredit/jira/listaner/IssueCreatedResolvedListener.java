@@ -22,26 +22,23 @@ import com.atlassian.jira.issue.ModifiedValue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.fields.layout.field.FieldLayoutItem;
 import com.atlassian.jira.issue.util.DefaultIssueChangeHolder;
-import com.atlassian.jira.issue.util.IssueChangeHolder;
-import com.atlassian.jira.component.ComponentAccessor;
-import com.atlassian.jira.issue.CustomFieldManager;
-import com.atlassian.jira.issue.fields.CustomField;
+
 
 @Component
 public class IssueCreatedResolvedListener implements InitializingBean, DisposableBean {
     private static final Logger log = LoggerFactory.getLogger(IssueCreatedResolvedListener.class);
 
     private final PluginSettingsService pluginSettingsService;
-    //private final CommentManager commentManager;
-
+    @JiraImport
+    private final CommentManager commentManager;
     @JiraImport
     private final EventPublisher eventPublisher;
 
     @Autowired
-    public IssueCreatedResolvedListener(EventPublisher eventPublisher, PluginSettingsService pluginSettingsService) {
+    public IssueCreatedResolvedListener(EventPublisher eventPublisher, PluginSettingsService pluginSettingsService,CommentManager commentManager) {
         this.eventPublisher = eventPublisher;
         this.pluginSettingsService = pluginSettingsService;
-        //this.commentManager = commentManager;
+        this.commentManager = commentManager;
     }
 
     @Override
@@ -62,19 +59,33 @@ public class IssueCreatedResolvedListener implements InitializingBean, Disposabl
         Long eventTypeId = issueEvent.getEventTypeId();
         Issue issue = issueEvent.getIssue();
         Comment comm = null;
-        if (eventTypeId.equals(EventType.ISSUE_COMMENTED_ID)){
+        if (eventTypeId.equals(EventType.ISSUE_COMMENTED_ID)) {
             log.info("New Comment Created");
             comm = issueEvent.getComment();
-        } if (comm == null) {
-            log.debug("Expected Comment but none found");
-        }else{
-            log.debug("Comment Created was " + comm.getId());
+            if (comm == null) {
+                log.debug("Expected Comment but none found");
+            } else {
+                log.debug("Comment Created was " + comm.getId());
 
-            this.updateLastUpdatedCustomField(issueEvent);
-        }
+                this.updateLastUpdatedCustomField(issueEvent);
+            }
+            log.debug("End of Comment creation");
+        }else if(eventTypeId == EventType.ISSUE_COMMENT_EDITED_ID){
+            log.info("Comment EDITED");
+            comm = issueEvent.getComment();
+            if (comm != null){
+                Long lastCommentId = commentManager.getLastComment(issueEvent.getIssue()).getId();
+                log.info(String.valueOf(lastCommentId));
+                log.info(String.valueOf(comm.getId()));
+                Long commId = comm.getId();
+                log.info("last comment EDITED");
+                this.updateLastUpdatedCustomField(issueEvent);
 
-        log.debug("End of Comment creation");
+            }
+
     }
+}
+
 
     private void updateLastUpdatedCustomField(IssueEvent issueEvent) {
         log.debug("Comment is:"+issueEvent.getComment().getBody());

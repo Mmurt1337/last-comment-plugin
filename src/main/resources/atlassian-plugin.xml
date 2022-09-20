@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2"> 
+<atlassian-plugin key="${atlassian.plugin.key}"
+                  name="${project.name}"
+                  plugins-version="2">
   <plugin-info> 
     <description>${project.description}</description>  
     <version>${project.version}</version>  
@@ -9,24 +11,35 @@
     <param name="plugin-logo">images/pluginLogo.png</param> 
   </plugin-info>  
   <!-- add our i18n resource -->  
-  <resource type="i18n" name="i18n" location="last-comment-plugin"/>  
+  <resource type="i18n"
+            name="i18n"
+            location="last-comment-plugin"/>
   <!-- add our web resources -->  
-  <web-resource key="last-comment-plugin-resources" name="last-comment-plugin Web Resources"> 
+  <web-resource key="last-comment-plugin-resources"
+                name="last-comment-plugin Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>  
     <resource type="download" name="last-comment-plugin.css" location="/css/last-comment-plugin.css"/>  
     <resource type="download" name="last-comment-plugin.js" location="/js/last-comment-plugin.js"/>  
     <resource type="download" name="images/" location="/images"/>  
     <context>last-comment-plugin</context> 
   </web-resource>  
-  <webwork1 key="last-comment-webwork" name="Last Comment Webwork" i18n-name-key="last-comment-webwork.name" roles-required="admin"> 
+  <webwork1 key="last-comment-webwork"
+            name="Last Comment Webwork"
+            i18n-name-key="last-comment-webwork.name"
+            roles-required="admin">
     <description key="last-comment-webwork.description">The Last Comment Webwork Plugin</description>  
     <actions> 
-      <action name="ru.homecredit.jira.webwork.LastCommentWebworkAction" alias="LastCommentWebworkAction"> 
+      <action name="ru.homecredit.jira.webwork.LastCommentWebworkAction"
+              alias="LastCommentWebworkAction">
         <view name="success">/templates/last-comment-webwork/success.vm</view> 
       </action> 
     </actions> 
   </webwork1>  
-  <web-item name="LC Web Item" i18n-name-key="lc-web-item.name" key="lc-web-item" section="admin_system_menu/top_system_section" weight="1000"> 
+  <web-item name="LC Web Item"
+            i18n-name-key="lc-web-item.name"
+            key="lc-web-item"
+            section="admin_system_menu/top_system_section"
+            weight="1000">
     <description key="lc-web-item.description">The LC Web Item Plugin</description>  
     <label key="lc-web-item.label"></label>  
     <link linkId="lc-web-item-link">/secure/lastcoment/LastCommentWebworkAction.jspa</link> 
